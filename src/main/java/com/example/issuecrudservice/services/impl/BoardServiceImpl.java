@@ -5,6 +5,10 @@ import com.example.issuecrudservice.repositories.BoardRepository;
 import com.example.issuecrudservice.services.BoardService;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Component
 public class BoardServiceImpl implements BoardService {
 
@@ -30,7 +34,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void deleteBoard(BoardEntity boardEntity) {
-        boardRepository.deleteById(boardEntity.getBoardId());
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteById(boardId);
+    }
+
+    @Override
+    public List<BoardEntity> getBoards() {
+        return StreamSupport
+                .stream(boardRepository.findAll().spliterator(), false)
+                .toList();
     }
 }
