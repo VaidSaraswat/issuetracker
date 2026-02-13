@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,12 @@ public class ColumnController {
     public ColumnController(ColumnMapperImpl columnMapper, ColumnServiceImpl columnService) {
         this.columnMapper = columnMapper;
         this.columnService = columnService;
+    }
+
+    @GetMapping(path = "/columns/board/{boardId}")
+    public List<ColumnDto> getAllColumnsForBoard(@PathVariable Long boardId) {
+        List<ColumnEntity> columnEntities = columnService.findColumnsByBoardId(boardId);
+        return columnEntities.stream().map(columnMapper::mapTo).collect(Collectors.toList());
     }
 
     @GetMapping(path = "/columns/{columnId}")
@@ -43,14 +50,14 @@ public class ColumnController {
         return columnMapper.mapTo(columnService.createColumn(columnEntity));
     }
 
-    @PutMapping(path = "/columns")
+    @PutMapping(path = "/column")
     public ColumnDto updateColumn(@RequestBody ColumnDto columnDto) {
         ColumnEntity columnEntity = columnMapper.mapFrom(columnDto);
         return columnMapper.mapTo(columnService.updateColumn(columnEntity));
     }
 
-    @DeleteMapping(path = "/columns")
-    public ResponseEntity<ColumnEntity> deleteColumn(Long columnId) {
+    @DeleteMapping(path = "/columns/{columnId}")
+    public ResponseEntity<ColumnEntity> deleteColumn(@PathVariable Long columnId) {
         columnService.deleteColumn(columnId);
         return ResponseEntity.ok().build();
     }

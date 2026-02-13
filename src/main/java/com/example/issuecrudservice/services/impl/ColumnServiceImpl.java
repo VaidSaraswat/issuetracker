@@ -43,4 +43,9 @@ public class ColumnServiceImpl implements ColumnService {
         return columnRepository.findById(id).orElse(null);
     }
 
+
+    @Override
+    public List<ColumnEntity> findColumnsByBoardId(Long boardId) {
+        return this.columnRepository.findColumnEntitiesByBoardEntity_BoardId(boardId);
+    }
 }

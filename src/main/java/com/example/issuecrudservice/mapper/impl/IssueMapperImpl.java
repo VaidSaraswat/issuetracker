@@ -12,8 +12,24 @@ public class IssueMapperImpl implements Mapper<IssueEntity, IssueDto> {
     private ModelMapper modelMapper;
 
     public IssueMapperImpl() {
+
         this.modelMapper = new ModelMapper();
+        this.modelMapper.createTypeMap(IssueEntity.class, IssueDto.class).addMappings(mapper -> {
+            mapper.map(src -> src.getAssignee().getUserId(), IssueDto::setAssigneeId);
+            mapper.map(src -> src.getColumnEntity().getColumnId(), IssueDto::setColumnId);
+        });
+
+        this.modelMapper.createTypeMap(IssueDto.class, IssueEntity.class).addMappings(mapper -> {
+            mapper.map(IssueDto::getColumnId, (dest, v) -> {
+                        dest.getColumnEntity().setColumnId((Long) v);
+                    }
+            );
+            mapper.map(IssueDto::getAssigneeId, (dest, v) -> {
+                dest.getAssignee().setUserId((Long) v);
+            });
+        });
     }
+
     public IssueDto mapTo(IssueEntity issueEntity) {
         return this.modelMapper.map(issueEntity, IssueDto.class);
     }

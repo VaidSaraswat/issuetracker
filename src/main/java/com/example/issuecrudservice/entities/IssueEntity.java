@@ -24,7 +24,7 @@ public class IssueEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity assignee;
-    
+
     @ManyToOne
     @JoinColumn(name = "column_id")
     private ColumnEntity columnEntity;

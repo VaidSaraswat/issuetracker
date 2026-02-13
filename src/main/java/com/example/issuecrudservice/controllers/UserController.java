@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping(path = "/users")
     public UserDto createUser(@RequestBody UserDto userDto) {
-        UserEntity  userEntity = userMapper.mapFrom(userDto);
+        UserEntity userEntity = userMapper.mapFrom(userDto);
         return userMapper.mapTo(userService.createUser(userEntity));
     }
 

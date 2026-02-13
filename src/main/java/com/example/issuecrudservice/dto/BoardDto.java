@@ -13,5 +13,5 @@ import lombok.Builder;
 public class BoardDto {
     private Long boardId;
     private String title;
-    private UserDto owner;
+    private Long ownerId;
 }

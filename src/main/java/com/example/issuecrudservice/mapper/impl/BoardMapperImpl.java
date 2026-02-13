@@ -5,15 +5,22 @@ import com.example.issuecrudservice.entities.BoardEntity;
 import com.example.issuecrudservice.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
-public class BoardMapperImpl implements Mapper<BoardEntity,  BoardDto> {
+public class BoardMapperImpl implements Mapper<BoardEntity, BoardDto> {
 
     private ModelMapper modelMapper;
 
     public BoardMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
+        this.modelMapper.createTypeMap(BoardEntity.class, BoardDto.class)
+                .addMappings(mapper ->
+                        mapper.map(src -> src.getOwner().getUserId(), BoardDto::setOwnerId)
+                );
+        this.modelMapper.createTypeMap(BoardDto.class, BoardEntity.class)
+                .addMappings(mapper ->
+                        mapper.map(BoardDto::getOwnerId, (dest, v) -> dest.getOwner().setUserId((Long) v))
+                );
     }
 
     @Override

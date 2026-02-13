@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface IssueRepository extends CrudRepository<IssueEntity, Long> {
-    public List<IssueEntity> findIssuesByColumnId(Long id);
+    List<IssueEntity> findIssueEntitiesByColumnEntity_ColumnId(Long columnEntityColumnId);
 }

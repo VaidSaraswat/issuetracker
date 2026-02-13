@@ -8,10 +8,10 @@ import javax.sql.DataSource;
 @SpringBootApplication
 public class IssuecrudserviceApplication {
 
-	public IssuecrudserviceApplication(final DataSource dataSource) {
-	}
+    public IssuecrudserviceApplication(final DataSource dataSource) {
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(IssuecrudserviceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(IssuecrudserviceApplication.class, args);
+    }
 }

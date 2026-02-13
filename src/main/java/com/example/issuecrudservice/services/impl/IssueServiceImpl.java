@@ -12,6 +12,7 @@ import java.util.stream.StreamSupport;
 @Service
 public class IssueServiceImpl implements IssueService {
     private IssueRepository issueRepository;
+
     public IssueServiceImpl(IssueRepository issueRepository) {
         this.issueRepository = issueRepository;
     }
@@ -24,7 +25,7 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public IssueEntity getIssue(Long id){
+    public IssueEntity getIssue(Long id) {
         return issueRepository.findById(id).orElse(null);
     }
 
@@ -45,6 +46,6 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public List<IssueEntity> findIssuesByColumnId(Long columnId) {
-        return issueRepository.findIssuesByColumnId(columnId);
+        return issueRepository.findIssueEntitiesByColumnEntity_ColumnId(columnId);
     }
 }

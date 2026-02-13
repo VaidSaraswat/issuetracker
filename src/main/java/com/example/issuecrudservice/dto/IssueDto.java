@@ -13,6 +13,6 @@ public class IssueDto {
     private Long issueId;
     private String title;
     private String description;
-    private UserDto assignee;
-    private ColumnDto column;
+    private Long assigneeId;
+    private Long columnId;
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ColumnRepository extends CrudRepository<ColumnEntity, Long> {
-    List<ColumnEntity> findByBoardId(Long boardId);
+    List<ColumnEntity> findColumnEntitiesByBoardEntity_BoardId(Long boardEntityBoardId);
 }

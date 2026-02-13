@@ -37,7 +37,7 @@ public class IssueController {
         return issueMapper.mapTo(issueService.getIssue(issueId));
     }
 
-    @GetMapping(path = "/issues/{columndId}")
+    @GetMapping(path = "/issues/column/{columnId}")
     public List<IssueDto> getAllIssuesForAColumn(@PathVariable Long columnId) {
         List<IssueEntity> issueEntities = issueService.findIssuesByColumnId(columnId);
         return issueEntities.stream().map(issueMapper::mapTo).collect(Collectors.toList());
@@ -48,7 +48,7 @@ public class IssueController {
         return issueMapper.mapTo(issueService.createIssue(issueEntity));
     }
 
-    @PutMapping(path = "/issues")
+    @PutMapping(path = "/issue")
     public IssueDto updateIssue(@RequestBody IssueDto issueDto) {
         IssueEntity issueEntity = issueMapper.mapFrom(issueDto);
         return issueMapper.mapTo(issueService.updateIssue(issueEntity));

@@ -13,5 +13,5 @@ public class ColumnDto {
     private Long columnId;
     private String title;
     private float pos;
-    private BoardDto board;
+    private Long boardId;
 }
