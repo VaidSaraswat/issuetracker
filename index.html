@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+<script>
+    const client = new StompJs.Client({
+        // Use the SockJS factory instead of a raw brokerURL
+        webSocketFactory: () => {
+            return new SockJS('http://localhost:8080/ws-service');
+        },
+        onConnect: (frame) => {
+            console.log('Connected! Subscribing...');
+            client.subscribe('/topic/updates', (message) => {
+                console.log("--- MESSAGE RECEIVED ---");
+                console.log(message.body);
+            });
+        },
+        onStompError: (frame) => {
+            console.error('Broker reported error: ' + frame.headers['message']);
+        }
+    });
+
+    client.activate();
+</script>
+</body>
+</html>

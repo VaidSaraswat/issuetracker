@@ -4,7 +4,9 @@ import com.example.issuecrudservice.dto.BoardDto;
 import com.example.issuecrudservice.entities.BoardEntity;
 import com.example.issuecrudservice.mapper.impl.BoardMapperImpl;
 import com.example.issuecrudservice.services.impl.BoardServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +23,12 @@ public class BoardController {
 
     private final BoardMapperImpl boardMapper;
     private final BoardServiceImpl boardService;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public BoardController(BoardMapperImpl boardMapper, BoardServiceImpl boardService) {
+    public BoardController(BoardMapperImpl boardMapper, BoardServiceImpl boardService, SimpMessagingTemplate messagingTemplate) {
         this.boardMapper = boardMapper;
         this.boardService = boardService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @GetMapping(path = "/boards")
@@ -47,7 +51,9 @@ public class BoardController {
     @PutMapping(path = "/board")
     public BoardDto updateBoard(@RequestBody BoardDto boardDto) {
         BoardEntity boardEntity = boardMapper.mapFrom(boardDto);
-        return boardMapper.mapTo(boardService.updateBoard(boardEntity));
+        BoardDto updatedBoardDto = boardMapper.mapTo(boardService.updateBoard(boardEntity));
+        messagingTemplate.convertAndSend("/topic/updates", updatedBoardDto);
+        return updatedBoardDto;
     }
 
     @DeleteMapping(path = "/board")

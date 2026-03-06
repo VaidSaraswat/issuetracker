@@ -4,7 +4,9 @@ import com.example.issuecrudservice.dto.ColumnDto;
 import com.example.issuecrudservice.entities.ColumnEntity;
 import com.example.issuecrudservice.mapper.impl.ColumnMapperImpl;
 import com.example.issuecrudservice.services.impl.ColumnServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +23,12 @@ public class ColumnController {
 
     private final ColumnMapperImpl columnMapper;
     private final ColumnServiceImpl columnService;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public ColumnController(ColumnMapperImpl columnMapper, ColumnServiceImpl columnService) {
+    public ColumnController(ColumnMapperImpl columnMapper, ColumnServiceImpl columnService, SimpMessagingTemplate messagingTemplate) {
         this.columnMapper = columnMapper;
         this.columnService = columnService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @GetMapping(path = "/columns/board/{boardId}")
@@ -47,13 +51,17 @@ public class ColumnController {
     @PostMapping(path = "/columns")
     public ColumnDto createColumn(@RequestBody ColumnDto columnDto) {
         ColumnEntity columnEntity = columnMapper.mapFrom(columnDto);
-        return columnMapper.mapTo(columnService.createColumn(columnEntity));
+        ColumnDto createdColumnDto = columnMapper.mapTo(columnService.createColumn(columnEntity));
+        messagingTemplate.convertAndSend("/topic/updates", createdColumnDto);
+        return columnDto;
     }
 
     @PutMapping(path = "/column")
     public ColumnDto updateColumn(@RequestBody ColumnDto columnDto) {
         ColumnEntity columnEntity = columnMapper.mapFrom(columnDto);
-        return columnMapper.mapTo(columnService.updateColumn(columnEntity));
+        ColumnDto updatedColumnDto = columnMapper.mapTo(columnService.createColumn(columnEntity));
+        messagingTemplate.convertAndSend("/topic/updates", updatedColumnDto);
+        return updatedColumnDto;
     }
 
     @DeleteMapping(path = "/columns/{columnId}")
