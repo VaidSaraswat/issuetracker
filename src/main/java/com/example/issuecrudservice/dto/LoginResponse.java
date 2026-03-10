@@ -1,6 +1,5 @@
 package com.example.issuecrudservice.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class UserDto {
-    private Long userId;
-    private  String email;
-    private String password;
+public class LoginResponse {
+    private String token;
+    private long expiresIn;
 }

@@ -5,6 +5,9 @@ import com.example.issuecrudservice.repositories.UserRepository;
 import com.example.issuecrudservice.services.UserService;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 @Component
 public class UserServiceImpl implements UserService {
 
@@ -22,6 +25,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity getUser(Long userId) {
         return userRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return StreamSupport
+                .stream(userRepository.findAll().spliterator(), false)
+                .toList();
     }
 
     @Override

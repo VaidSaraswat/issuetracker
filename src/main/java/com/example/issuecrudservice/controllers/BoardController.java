@@ -4,7 +4,6 @@ import com.example.issuecrudservice.dto.BoardDto;
 import com.example.issuecrudservice.entities.BoardEntity;
 import com.example.issuecrudservice.mapper.impl.BoardMapperImpl;
 import com.example.issuecrudservice.services.impl.BoardServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
